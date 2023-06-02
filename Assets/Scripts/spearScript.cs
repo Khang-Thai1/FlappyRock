@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class spearScript : MonoBehaviour
+{
+    public Rigidbody2D myRigidBody2D;
+    public float flapStrength;
+    public LogicScript logic;
+    public bool playerIsAlive = true;
+    public AudioSource src;
+    public AudioClip deadEffect;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        logic = GameObject.FindGameObjectWithTag("LogicManager").GetComponent<LogicScript>();
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space) == true && playerIsAlive == true)
+        {
+            myRigidBody2D.velocity = Vector2.up * flapStrength;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        src.clip = deadEffect;
+        src.Play();
+        logic.gameOver();
+        playerIsAlive = false;
+    }
+}
